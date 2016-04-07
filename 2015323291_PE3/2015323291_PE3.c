@@ -9,16 +9,12 @@ void    inum_to_name(ino_t , char *, int );
 
 int main()
 {
-	printpathto( get_inode( "." ) );	/* print path to here	*/
-	putchar('\n');				/* then add newline	*/
+	printpathto( get_inode( "." ) );	
+	putchar('\n');				
 	return 0;
 }
 
 void printpathto( ino_t this_inode )
-/*
- *	prints path leading down to an object with this inode
- *	kindof recursive
- */
 {
 	ino_t	my_inode ;
 	char	its_name[BUFSIZ];
@@ -27,9 +23,9 @@ void printpathto( ino_t this_inode )
 
 	while( get_inode("..") != this_inode )
 	{
-		chdir( ".." );				/* up one dir	*/
+		chdir( ".." );			
 
-		inum_to_name(this_inode,its_name,BUFSIZ);/* get its name*/
+		inum_to_name(this_inode,its_name,BUFSIZ);
 
 		if(i < 100)
 		{
@@ -37,20 +33,16 @@ void printpathto( ino_t this_inode )
 			i = i + 1;
 		}
 		this_inode = get_inode(".");
-							/* name of this	*/
+						
 	}
 	for(j=i-1;j>=0;j--)
 		printf("/%s", buf[j]);
 }
 
 void inum_to_name(ino_t inode_to_find , char *namebuf, int buflen)
-/*
- *	looks through current directory for a file with this inode
- *	number and copies its name into namebuf
- */
 {
-	DIR		*dir_ptr;		/* the directory */
-	struct dirent	*direntp;		/* each entry	 */
+	DIR		*dir_ptr;		
+	struct dirent	*direntp;		
 
 	dir_ptr = opendir( "." );
 	if ( dir_ptr == NULL ){
@@ -58,15 +50,11 @@ void inum_to_name(ino_t inode_to_find , char *namebuf, int buflen)
 		exit(1);
 	}
 
-	/*
-	 * search directory for a file with specified inum
-	 */
-
 	while ( ( direntp = readdir( dir_ptr ) ) != NULL )
 		if ( direntp->d_ino == inode_to_find )
 		{
 			strncpy( namebuf, direntp->d_name, buflen);
-			namebuf[buflen-1] = '\0';   /* just in case */
+			namebuf[buflen-1] = '\0';   
 			closedir( dir_ptr );
 			return;
 		}
@@ -75,9 +63,6 @@ void inum_to_name(ino_t inode_to_find , char *namebuf, int buflen)
 }
 
 ino_t get_inode( char *fname )
-/*
- *	returns inode number of the file
- */
 {
 	struct stat info;
 
