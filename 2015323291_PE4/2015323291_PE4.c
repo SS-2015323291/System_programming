@@ -11,7 +11,7 @@ void main(int ac, char *av[])
 
 	if(ac == 3)		//argc number check
 	{
-		if(!strcmp(dirname(av[1]),dirname(av[2])))
+		if(!strcmp(basename(av[1]),basename(av[2])))
 		{
 			fprintf(stderr, "source and target is same\n");
 			exit(0);
